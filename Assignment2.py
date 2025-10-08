@@ -60,7 +60,7 @@ def PatternMatch(fileName):
     return 0
 
 def main():
-    fileName = 'samples\\sample_14' # name for samples test files
+    fileName = 'samples\\sample_1' # name for samples test files
     # fileTest = 'examples\\ex_1' # name for examples test files
     result = PatternMatch(fileName)
     return 0
