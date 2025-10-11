@@ -23,26 +23,26 @@ def PatternMatch(fileName):
     # Z algorithm implementation
     sourceString = patternString + "$" + sourceString
     Z = [0] * len(sourceString)
-    index = 0 #placeholder for template matching index
-    i = 1
+    index = 0 #index for pattern
+    i = 1 #index for sourceString
     
     while i < len(sourceString):
-        # print(i)
-        while ( (i+index)<len(sourceString)):
+        while ( (i+index) < len(sourceString) ):
             numComparisons += 1
-            if ( sourceString[index]==sourceString[i + index] ):
+            if ( (sourceString[index] == sourceString[i + index]) ):
                 index += 1
                 numMatches += 1
             else:
+                numMismatches += 1
                 break
-            # print(i-index)
         
-        # reset and increment
         Z[i] = index
+        # check if full pattern matched
         if index == len(patternString):
             retList.append(i - index)
             # print(i-index)
-        
+
+        # reset and increment
         if index > 1:
             for j in range(i+1, i+index):
                 Z[j] = Z[j-i]
@@ -50,9 +50,7 @@ def PatternMatch(fileName):
         else:
             i += 1
         index = 0
-
-    numMismatches = numComparisons - numMatches
-
+    
     # Store solution into file
     # '''
     outFile = "solutions\\sol_"+fileName.split("_", 1)[1]
@@ -64,9 +62,7 @@ def PatternMatch(fileName):
             f.write(str(i) + "\n")
         f.write("Number of Comparisons: " + str(numComparisons) + "\n")
         f.write("Number of matches: " + str(numMatches) + "\n")
-        f.write("Number of mismatches: " + str(numMismatches) + "\n")
-    
-    
+        f.write("Number of mismatches: " + str(numMismatches) + "\n")    
     '''
     print("\n")
     print("Number of Comparisons: ", numComparisons)
@@ -80,8 +76,7 @@ def main():
     print("Please enter the name of the file to test (ex: sample_0, sample_1, etc.): ")
     # Take input from user, after asking what file to use
     fileName = "samples\\" + input()
-    #fileTest = "examples\\ex_0" # name for examples test files
-    #test = "test.txt" # name for test file
+    fileTest = "examples\\ex_2" # name for examples test files
     result = PatternMatch(fileName)
     return 0
 
