@@ -22,37 +22,55 @@ def PatternMatch(fileName):
 
     # Z algorithm implementation
     sourceString = patternString + "$" + sourceString
-    Z = [0] * len(sourceString)
-    index = 0 #index for pattern
-    i = 1 #index for sourceString
     
-    while i < len(sourceString):
-        while ( (i+index) < len(sourceString) ):
-            numComparisons += 1
-            if ( (sourceString[index] == sourceString[i + index]) ):
-                index += 1
-                numMatches += 1
-            else:
-                numMismatches += 1
-                break
-        
-        Z[i] = index
-        # check if full pattern matched
-        if index == len(patternString):
-            retList.append(i - index)
-            # print(i-index)
+    n = len(sourceString)
+    Z = [0] * n
+    index = 0
+    l,r= 0,0
+    i = 1 #index for sourceString
 
-        # reset and increment
-        if index > 1:
-            for j in range(i+1, i+index):
-                Z[j] = Z[j-i]
-            i += index
-        else:
-            i += 1
-        index = 0
+    while i < n:
+        if i > r: # Case 1
+            l=i
+            r=i
+
+            while ( (i+index) < n ):
+                numComparisons += 1
+                if ( (sourceString[index] == sourceString[i + index]) ):
+                    r += 1
+                    index += 1
+                    Z[i] += 1
+                    numMatches += 1
+                else:
+                    numMismatches += 1
+                    break
+            r-=1
+        else: # Case 2
+            if Z[i-l] == r-l: # Case 2-C
+                index = len(patternString)
+                while ( (i+index) < n ):
+                    numComparisons += 1
+                    if ( (sourceString[index] == sourceString[l + index]) ):
+                        index += 1
+                        numMatches += 1
+                    else:
+                        numMismatches += 1
+                        break
+                Z[i] = Z[i-l]
+            else: # Case 2-a, 2-b
+                while ( (i+index) < n ):
+                    if ( (sourceString[index] == sourceString[i + index]) ):
+                        index += 1
+                    else:
+                        Z[i] = index
+                        break
+                            
+        # print(numComparisons," ",numMatches," ",numMismatches)
+        index=0
+        i += 1
     
     # Store solution into file
-    # '''
+    #'''
     outFile = "solutions\\sol_"+fileName.split("_", 1)[1]
     if os.path.exists(outFile):
         os.remove(outFile)
@@ -77,6 +95,7 @@ def main():
     # Take input from user, after asking what file to use
     fileName = "samples\\" + input()
     fileTest = "examples\\ex_2" # name for examples test files
+    test = "test.txt" # name for test file
     result = PatternMatch(fileName)
     return 0
 
