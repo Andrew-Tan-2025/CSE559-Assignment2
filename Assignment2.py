@@ -66,6 +66,8 @@ def PatternMatch(fileName):
                         break
                             
         # print(numComparisons," ",numMatches," ",numMismatches)
+        if index == len(patternString):
+                retList.append(i-index)
         index=0
         i += 1
     
@@ -82,7 +84,8 @@ def PatternMatch(fileName):
         f.write("Number of matches: " + str(numMatches) + "\n")
         f.write("Number of mismatches: " + str(numMismatches) + "\n")    
     '''
-    print("\n")
+    for i in retList:
+        print(i)
     print("Number of Comparisons: ", numComparisons)
     print("Number of matches: ",numMatches)
     print("Number of mismatches: ", numMismatches) 
@@ -94,7 +97,7 @@ def main():
     print("Please enter the name of the file to test (ex: sample_0, sample_1, etc.): ")
     # Take input from user, after asking what file to use
     fileName = "samples\\" + input()
-    fileTest = "examples\\ex_2" # name for examples test files
+    fileTest = "examples\\ex_1" # name for examples test files
     test = "test.txt" # name for test file
     result = PatternMatch(fileName)
     return 0
